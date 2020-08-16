@@ -72,9 +72,17 @@ export default function Calculator() {
             )
         )
     }
+
+    function deleteLastInput() {
+        setStateValues(
+            stateOptions.slice(0, -1)
+        );
+    }
     const handleButtonClick = (e) => {
-        if(e === "C"){
+        if(e === "AC"){
             setStateValues([]);
+        }else if(e === "C"){
+            deleteLastInput();
         }else if(stateOptions.length === 0 && isCurrentInputOptr(e)){
             setErrorMsg("* First input can't be an operator");
             setStateValues([]);
@@ -100,10 +108,17 @@ export default function Calculator() {
                 </Grid>
                 <ButtonRow
                     handleButtonClick={handleButtonClick}
-                    key1={"C"}
+                    key1={"AC"}
                     key2={"%"}
                     key3={"÷"}
                     key4={"X"}
+                />
+                <ButtonRow
+                    handleButtonClick={handleButtonClick}
+                    key1={"C"}
+                    key2={"0"}
+                    key3={"00"}
+                    key4={"."}
                 />
                 <ButtonRow
                     handleButtonClick={handleButtonClick}
