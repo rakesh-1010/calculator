@@ -78,24 +78,36 @@ export default function Calculator() {
             stateOptions.slice(0, -1)
         );
     }
+
+    function evaluate() {
+        let output = eval(stateOptions.join(""))
+        setStateValues([
+            output
+        ]);
+
+    }
     const handleButtonClick = (e) => {
         if(e === "AC"){
             setStateValues([]);
         }else if(e === "C"){
             deleteLastInput();
-        }else if(stateOptions.length === 0 && isCurrentInputOptr(e)){
+        }else if(stateOptions.length === 0 && ["0", "00"].includes(e)){
+            setStateValues([]);
+        }else if(stateOptions.length === 0 && (isCurrentInputOptr(e)-['-'])){
             setErrorMsg("* First input can't be an operator");
             setStateValues([]);
         }else if (isLastInputOptr() && isCurrentInputOptr(e)){
             setErrorMsg("* Can't put two operators together");
-        } else {
+        }else if(e === "="){
+            evaluate();
+        }
+        else {
             setErrorMsg("");
             setStateValues([
                 ...stateOptions,
                 e
             ]);
         }
-        console.log(e);
     };
     return (
         <div className={classes.calculator}>
@@ -110,8 +122,8 @@ export default function Calculator() {
                     handleButtonClick={handleButtonClick}
                     key1={"AC"}
                     key2={"%"}
-                    key3={"÷"}
-                    key4={"X"}
+                    key3={"/"}
+                    key4={"*"}
                 />
                 <ButtonRow
                     handleButtonClick={handleButtonClick}
