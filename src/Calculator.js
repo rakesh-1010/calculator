@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from "@material-ui/core/Button";
-import Screen from './components/screen';
+import DisplayScreen from './components/screen';
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
+import KeyboardEventHandler from 'react-keyboard-event-handler';
 
 const useStyles = makeStyles((theme) => ({
     calculator: {
@@ -85,7 +86,8 @@ export default function Calculator() {
             output
         ]);
 
-    }
+    };
+
     const handleButtonClick = (e) => {
         if(e === "AC"){
             setStateValues([]);
@@ -109,50 +111,81 @@ export default function Calculator() {
             ]);
         }
     };
+
+    const supportedKeys = [
+         'shift+=','shift+8','shift+5','numeric', ".", "-", "enter", "backspace"
+    ];
+
+    const handleKeyPress = (key) => {
+        if(key === 'backspace'){
+            handleButtonClick("C");
+        }else if(key === 'enter'){
+            handleButtonClick("=");
+        }else if(key === 'shift+='){
+            handleButtonClick("+");
+        }else if(key === 'shift+8'){
+            handleButtonClick("*");
+        }else if(key === 'shift+5'){
+            handleButtonClick("%");
+        }
+        else if(["1","2","3","4","5","6","7","8","9","0", ".","-"].includes(key)){
+            handleButtonClick(key);
+        }
+    };
+
     return (
         <div className={classes.calculator}>
+            <KeyboardEventHandler
+                handleKeys={supportedKeys}
+                onKeyEvent={(key, e) => handleKeyPress(key)}
+            />
             <Container maxWidth="sm">
                 <span style={{color: "red"}} >{errorMsg}</span>
                 <Grid container spacing={1} style={{paddingTop: "10px"}}>
                     <Grid item xs={12} sm={8}>
-                        <Screen display={stateOptions} />
+                        <DisplayScreen display={stateOptions} />
                     </Grid>
                 </Grid>
-                <ButtonRow
-                    handleButtonClick={handleButtonClick}
-                    key1={"AC"}
-                    key2={"%"}
-                    key3={"/"}
-                    key4={"*"}
-                />
-                <ButtonRow
-                    handleButtonClick={handleButtonClick}
-                    key1={"C"}
-                    key2={"0"}
-                    key3={"00"}
-                    key4={"."}
-                />
-                <ButtonRow
-                    handleButtonClick={handleButtonClick}
-                    key1={7}
-                    key2={8}
-                    key3={9}
-                    key4={"-"}
-                />
-                <ButtonRow
-                    handleButtonClick={handleButtonClick}
-                    key1={4}
-                    key2={5}
-                    key3={6}
-                    key4={"+"}
-                />
-                <ButtonRow
-                    handleButtonClick={handleButtonClick}
-                    key1={1}
-                    key2={2}
-                    key3={3}
-                    key4={"="}
-                />
+                <KeyboardEventHandler
+                    handleKeys={supportedKeys}
+                    onKeyEvent={(key, e) => handleKeyPress(key)}
+                >
+                    <ButtonRow
+                        handleButtonClick={handleButtonClick}
+                        key1={"AC"}
+                        key2={"%"}
+                        key3={"/"}
+                        key4={"*"}
+                    />
+                    <ButtonRow
+                        handleButtonClick={handleButtonClick}
+                        key1={"C"}
+                        key2={"0"}
+                        key3={"00"}
+                        key4={"."}
+                    />
+                    <ButtonRow
+                        handleButtonClick={handleButtonClick}
+                        key1={7}
+                        key2={8}
+                        key3={9}
+                        key4={"-"}
+                    />
+                    <ButtonRow
+                        handleButtonClick={handleButtonClick}
+                        key1={4}
+                        key2={5}
+                        key3={6}
+                        key4={"+"}
+                    />
+                    <ButtonRow
+                        handleButtonClick={handleButtonClick}
+                        key1={1}
+                        key2={2}
+                        key3={3}
+                        key4={"="}
+                    />
+                </KeyboardEventHandler>
             </Container>
         </div>
     );

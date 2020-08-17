@@ -1,7 +1,7 @@
 import React from "react";
 import Box from "@material-ui/core/Box";
 
-export default Screen = (props) => {
+const DisplayScreen = (props) => {
    return(
       <Box
           style={{fontSize: '42px', textAlign: "right", overflowWrap: "anywhere"}}
@@ -12,4 +12,5 @@ export default Screen = (props) => {
           {props.display.join("") || 0}
       </Box>
    )
-}
+};
+export default DisplayScreen;
